@@ -69,6 +69,7 @@ artifacts/
 *.pidb
 *.svclog
 *.scc
+*.db
 
 # Chutzpah Test files
 _Chutzpah*
@@ -259,3 +260,6 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+
+CMakeFiles
+cmake-build-debug

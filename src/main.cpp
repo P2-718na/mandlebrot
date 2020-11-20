@@ -2,9 +2,9 @@
 #include <iostream>
 #include <complex>
 
-#define SCALE 200.f
-#define WIDTH 500
-#define HEIGHT 500
+#define SCALE 300.f
+#define WIDTH 1000
+#define HEIGHT 1000
 #define OFFSET_X 150
 #define OFFSET_Y 0
 #define MAX_RECURSION_DEPTH 256
