@@ -36,18 +36,25 @@ int main() {
 
 	window.clear();
 
-	for (int i = -WIDTH/2 - OFFSET_X; i < WIDTH/2 - OFFSET_X; i++) {
-		for (int j = -HEIGHT/2 - OFFSET_Y; j < HEIGHT/2 - OFFSET_Y; j++) {
-		    const float depth = computeMandelbrot(i/SCALE, j/SCALE, MAX_RECURSION_DEPTH);
-			dotIdea.setFillColor(sf::Color(0, 0, depth / (float)MAX_RECURSION_DEPTH * 255.f));
-			dotIdea.setPosition(i + WIDTH/2 + OFFSET_X, j + HEIGHT/2 + OFFSET_Y);
+	const int centralX = WIDTH / 2;
+	const int centralY = HEIGHT / 2;
+
+	for (int viewportX = 0; viewportX < WIDTH; ++viewportX) {
+		for (int viewportY = 0; viewportY < HEIGHT; ++viewportY) {
+
+		    const auto mandlebrotX = (float) (viewportX - centralX - OFFSET_X) / SCALE;
+            const auto mandlebrotY = (float) (viewportY - centralY - OFFSET_Y) / SCALE;
+
+		    const auto depth = (float) computeMandelbrot(mandlebrotX, mandlebrotY, MAX_RECURSION_DEPTH);
+
+		    const auto color = sf::Color(0, 0, depth / (float) MAX_RECURSION_DEPTH * 255.f);
+
+			dotIdea.setFillColor(color);
+			dotIdea.setPosition((float) viewportX, (float) viewportY);
 			window.draw(dotIdea);
 		}
-		//cout << i << endl;
-		
 	}
 	window.display();
-	
 
 	while (window.isOpen()) {
 		sf::Event event;
