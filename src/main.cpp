@@ -2,12 +2,12 @@
 #include <iostream>
 #include <complex>
 
-#define SCALE 300.f
-#define WIDTH 1000
-#define HEIGHT 1000
+#define SCALE 200.f
+#define WIDTH 600
+#define HEIGHT 600
 #define OFFSET_X 150
 #define OFFSET_Y 0
-#define MAX_RECURSION_DEPTH 256
+#define MAX_RECURSION_DEPTH 32
 
 using namespace std;
 
@@ -38,7 +38,8 @@ int main() {
 
 	for (int i = -WIDTH/2 - OFFSET_X; i < WIDTH/2 - OFFSET_X; i++) {
 		for (int j = -HEIGHT/2 - OFFSET_Y; j < HEIGHT/2 - OFFSET_Y; j++) {
-			dotIdea.setFillColor(rainbow[computeMandelbrot(i/SCALE, j/SCALE, MAX_RECURSION_DEPTH) / (MAX_RECURSION_DEPTH / 8)]);
+		    const float depth = computeMandelbrot(i/SCALE, j/SCALE, MAX_RECURSION_DEPTH);
+			dotIdea.setFillColor(sf::Color(0, 0, depth / (float)MAX_RECURSION_DEPTH * 255.f));
 			dotIdea.setPosition(i + WIDTH/2 + OFFSET_X, j + HEIGHT/2 + OFFSET_Y);
 			window.draw(dotIdea);
 		}
