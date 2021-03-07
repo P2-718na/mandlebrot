@@ -1,12 +1,13 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <complex>
+#include <cmath>
 
-#define SCALE 200.f
-#define WIDTH 600
-#define HEIGHT 600
-#define OFFSET_X 150
-#define OFFSET_Y 0
+#define SCALE 7000.f
+#define WIDTH 1920
+#define HEIGHT 1080
+#define OFFSET_X 11900
+#define OFFSET_Y 200
 #define MAX_RECURSION_DEPTH 32
 
 using namespace std;
@@ -15,17 +16,20 @@ int cabs(complex<float> n) {
 	return sqrt(real(n)*real(n) + imag(n)*imag(n));
 }
 
-int computeMandelbrot(float x, float y, int depth) {
+int computeShip(float x, float y, int depth) {
 	complex<float> c(x, y);
 	complex<float> z(0, 0);
 	while (depth > 0) {
+	    z.real(abs(z.real()));
+        z.imag(abs(z.imag()));
+
 		z = pow(z, complex<float>(2, 0)) + c;
 		if (cabs(z) > 2) {
 			return depth;
 		}
 		--depth;
 	}
-	return true;
+	return 0;
 }
 
 int main() {
@@ -45,7 +49,7 @@ int main() {
 		    const auto mandlebrotX = (float) (viewportX - centralX - OFFSET_X) / SCALE;
             const auto mandlebrotY = (float) (viewportY - centralY - OFFSET_Y) / SCALE;
 
-		    const auto depth = (float) computeMandelbrot(mandlebrotX, mandlebrotY, MAX_RECURSION_DEPTH);
+		    const auto depth = (float) computeShip(mandlebrotX, mandlebrotY, MAX_RECURSION_DEPTH);
 
 		    const auto color = sf::Color(0, 0, depth / (float) MAX_RECURSION_DEPTH * 255.f);
 
@@ -55,6 +59,14 @@ int main() {
 		}
 	}
 	window.display();
+
+    sf::Texture texture;
+    texture.create(WIDTH, HEIGHT);
+    texture.update(window);
+    if (texture.copyToImage().saveToFile("exportw.png"))
+    {
+        std::cout << "screenshot saved to " << "exportw.png" << std::endl;
+    }
 
 	while (window.isOpen()) {
 		sf::Event event;
