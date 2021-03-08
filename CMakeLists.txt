@@ -2,7 +2,10 @@ cmake_minimum_required(VERSION 3.1)
 
 project(Mandelbrot)
 
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake-modules" ${CMAKE_MODULE_PATH})
+
 find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
+find_package(TGUI 0.9 REQUIRED)
 
 find_package(OpenMP)
 if (OPENMP_FOUND)
@@ -17,4 +20,4 @@ endif()
 
 add_executable(mandelbrot ./src/main.cpp)
 
-target_link_libraries(mandelbrot sfml-graphics sfml-audio)
+target_link_libraries(mandelbrot sfml-graphics sfml-audio tgui)
