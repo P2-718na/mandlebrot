@@ -38,10 +38,9 @@ void drawFractal(sf::RenderWindow &window) {
     const int centralX = WIDTH / 2;
     const int centralY = HEIGHT / 2;
 
-    #pragma omp parallel for default(shared)
+    #pragma omp parallel for default(none) shared(fractalImage)
     for (int viewportX = 0; viewportX < WIDTH; ++viewportX) {
         for (int viewportY = 0; viewportY < HEIGHT; ++viewportY) {
-
             const auto mandlebrotX = (float) (viewportX - centralX - OFFSET_X) / SCALE;
             const auto mandlebrotY = (float) (viewportY - centralY - OFFSET_Y) / SCALE;
 
