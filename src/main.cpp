@@ -72,6 +72,11 @@ int main() {
     auto editBox = tgui::EditBox::create();
 
     button->setPosition("50%", "50%");
+    button->onPress([&]{
+        std::cout << editBox->getText() << endl;
+    });
+
+    button->onPress.setEnabled(true);
 
     gui.add(button);
     gui.add(editBox, "editbox");
@@ -86,10 +91,11 @@ int main() {
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event)) {
-		    gui.handleEvent(event);
+			if (event.type == sf::Event::Closed) {
+                window.close();
+            }
 
-			if (event.type == sf::Event::Closed)
-				window.close();
+            gui.handleEvent(event);
 		}
 
 		window.clear();
