@@ -18,6 +18,7 @@ int cabs(complex<float> n) {
 int computeMandelbrot(float x, float y, int depth) {
 	complex<float> c(x, y);
 	complex<float> z(0, 0);
+
 	while (depth > 0) {
 		z = pow(z, complex<float>(2, 0)) + c;
 		if (cabs(z) > 2) {
@@ -25,36 +26,51 @@ int computeMandelbrot(float x, float y, int depth) {
 		}
 		--depth;
 	}
-	return true;
+	return 0;
 }
 
-int main() {
-	sf::Color rainbow[] = { sf::Color::Black, sf::Color::White, sf::Color::Red, sf::Color::Green, sf::Color::Blue, sf::Color::Yellow, sf::Color::Magenta, sf::Color::Cyan };
+void drawFractal(sf::RenderWindow &window) {
+    window.clear();
 
-	sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Mandelbrot");
-	sf::RectangleShape dotIdea(sf::Vector2f(1, 1));
+    sf::Image fractalImage;
+    fractalImage.create(WIDTH, HEIGHT);
 
-	window.clear();
+    const int centralX = WIDTH / 2;
+    const int centralY = HEIGHT / 2;
 
-	const int centralX = WIDTH / 2;
-	const int centralY = HEIGHT / 2;
+    for (int viewportX = 0; viewportX < WIDTH; ++viewportX) {
+        for (int viewportY = 0; viewportY < HEIGHT; ++viewportY) {
 
-	for (int viewportX = 0; viewportX < WIDTH; ++viewportX) {
-		for (int viewportY = 0; viewportY < HEIGHT; ++viewportY) {
-
-		    const auto mandlebrotX = (float) (viewportX - centralX - OFFSET_X) / SCALE;
+            const auto mandlebrotX = (float) (viewportX - centralX - OFFSET_X) / SCALE;
             const auto mandlebrotY = (float) (viewportY - centralY - OFFSET_Y) / SCALE;
 
 		    const auto depth = (float) computeMandelbrot(mandlebrotX, mandlebrotY, MAX_RECURSION_DEPTH);
 
 		    const auto color = sf::Color(0, 0, depth / (float) MAX_RECURSION_DEPTH * 255.f);
 
-			dotIdea.setFillColor(color);
-			dotIdea.setPosition((float) viewportX, (float) viewportY);
-			window.draw(dotIdea);
-		}
-	}
-	window.display();
+            fractalImage.setPixel(viewportX, viewportY, color);
+        }
+    }
+
+    sf::Texture texture;
+    texture.loadFromImage(fractalImage);  //Load Texture from image
+
+    sf::Sprite sprite;
+    sprite.setTexture(texture);
+
+    window.draw(sprite);
+    window.display();
+}
+
+int main() {
+	sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Mandelbrot");
+
+	drawFractal(window);
+
+    //if (texture.copyToImage().saveToFile("exportj.png"))
+    //{
+    //    std::cout << "screenshot saved to " << "exportj.png" << std::endl;
+    //}
 
 	while (window.isOpen()) {
 		sf::Event event;
