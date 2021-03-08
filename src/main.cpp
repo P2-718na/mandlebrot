@@ -38,6 +38,7 @@ void drawFractal(sf::RenderWindow &window) {
     const int centralX = WIDTH / 2;
     const int centralY = HEIGHT / 2;
 
+    #pragma omp parallel for default(shared)
     for (int viewportX = 0; viewportX < WIDTH; ++viewportX) {
         for (int viewportY = 0; viewportY < HEIGHT; ++viewportY) {
 
