@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.11)
 
 PROJECT(Mandelbrot)
 
@@ -15,7 +15,4 @@ else()
     MESSAGE(WARNING "OpenMP NOT found. Rendering will be slower.")
 endif()
 
-ADD_EXECUTABLE(mandelbrot ./src/main.cpp)
-
-TARGET_LINK_LIBRARIES(mandelbrot sfml-graphics sfml-audio)
-SET_PROPERTY(TARGET mandelbrot PROPERTY CXX_STANDARD 14)
+ADD_SUBDIRECTORY(src)
